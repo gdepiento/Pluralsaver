@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Pluralsaver>
+  <Configuration>
+    <PluralsightAccount Login="" Password="" />
+    <Download Path="" />
+    <DownloadDelay PlayClip="" AfterClip="" />
+  </Configuration>
+  <Download>
+    <Course></Course>
+  </Download>
+</Pluralsaver>
