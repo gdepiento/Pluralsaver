@@ -2,8 +2,8 @@
 <Pluralsaver>
   <Configuration>
     <PluralsightAccount Login="" Password="" />
-    <Download Path="" />
-    <DownloadDelay PlayClip="" AfterClip="" />
+    <Download Path="d:\Pluralsight" />
+    <DownloadDelay PlayClip="15" AfterClipTimeout="240" />
   </Configuration>
   <Download>
     <Course></Course>

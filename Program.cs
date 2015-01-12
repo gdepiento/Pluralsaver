@@ -10,6 +10,7 @@ namespace Pluralsaver
     {
         static void Main(string[] args)
         {
+            var settings = new PluralsaverSettings();
         }
     }
 }
