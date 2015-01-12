@@ -11,6 +11,9 @@ namespace Pluralsaver
         static void Main(string[] args)
         {
             var settings = new PluralsaverSettings();
+            var courseDownloader = new CourseDownloader(settings);
+
+            courseDownloader.Initialize();
         }
     }
 }

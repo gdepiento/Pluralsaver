@@ -39,16 +39,16 @@ namespace Pluralsaver
             }
         }
 
-        public short PlayClip
+        public int PlayClip
         {
             get
             {
-                short playClipSeconds;
+                int playClipSeconds;
                 var playClip = _downloadDelay.Attribute("PlayClip").Value;
 
                 try
                 {
-                    playClipSeconds = Int16.Parse(playClip);
+                    playClipSeconds = int.Parse(playClip);
                 }
                 catch (FormatException)
                 {
@@ -58,16 +58,16 @@ namespace Pluralsaver
             }
         }
 
-        public short AfterClipTimeout
+        public int AfterClipTimeout
         {
             get
             {
-                short afterClipTimeoutSeconds;
+                int afterClipTimeoutSeconds;
                 var afterClipTimeout = _downloadDelay.Attribute("AfterClipTimeout").Value;
 
                 try
                 {
-                    afterClipTimeoutSeconds = Int16.Parse(afterClipTimeout);
+                    afterClipTimeoutSeconds = int.Parse(afterClipTimeout);
                 }
                 catch (FormatException)
                 {
