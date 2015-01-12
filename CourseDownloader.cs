@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Pluralsaver.PluralsightPages;
 
 namespace Pluralsaver
 {
@@ -67,6 +63,19 @@ namespace Pluralsaver
             // We need to subtract 1 from user input number to get the correct index as it null-based 
             var courseTitle = _settings.CoursesToDownload[userCourse - 1];
             Console.WriteLine("Downloading course #{0}: {1}", userCourse, courseTitle);
+
+            OpenCourseInBrowser();
+        }
+
+        private void OpenCourseInBrowser()
+        {
+            Driver.Initialize();
+
+            HomePage.GoTo();
+            HomePage.SignInButton.Click();
+
+            LoginPage.Login(_settings.Login, _settings.Password);
+
         }
     }
 }
