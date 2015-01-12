@@ -1,5 +1,7 @@
 ﻿using System;
 using System.CodeDom;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -14,8 +16,8 @@ namespace Pluralsaver
         private XElement _pluralsightAccout;
         private XElement _download;
         private XElement _downloadDelay;
+        private XElement _coursesToDownload;
         
-
         public string Login
         {
             get { return _pluralsightAccout.Attribute("Login").Value; }
@@ -74,8 +76,7 @@ namespace Pluralsaver
                 return afterClipTimeoutSeconds;
             }
         }
-
-            
+        
         public PluralsaverSettings()
         {
             try
@@ -88,6 +89,14 @@ namespace Pluralsaver
             }
         }
 
+        public List<string> CoursesToDownload
+        {
+            get
+            {
+                return _coursesToDownload.XPathSelectElements("Course").Select(c => c.Value).ToList();
+            }
+        }
+
         private void InitializeSettings()
         {
             Console.WriteLine("Initializing settings...");
@@ -97,6 +106,7 @@ namespace Pluralsaver
             _pluralsightAccout = _configuration.XPathSelectElement("PluralsightAccount");
             _download = _configuration.XPathSelectElement("Download");
             _downloadDelay = _configuration.XPathSelectElement("DownloadDelay");
+            _coursesToDownload = _settings.XPathSelectElement("CoursesToDownload");
 
             Console.WriteLine("* Pluralsight Account Login   : " + AfterClipTimeout);
             Console.WriteLine("* Download Path               : " + Path);
