@@ -66,8 +66,10 @@
     <Compile Include="CourseDownloader.cs" />
     <Compile Include="Driver.cs" />
     <Compile Include="PluralsaverSettings.cs" />
+    <Compile Include="PluralsightPages\CoursePage.cs" />
     <Compile Include="PluralsightPages\HomePage.cs" />
     <Compile Include="PluralsightPages\LoginPage.cs" />
+    <Compile Include="PluralsightPages\SearchResultsPage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

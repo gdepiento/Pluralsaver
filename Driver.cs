@@ -17,7 +17,9 @@ namespace Pluralsaver
 
         public static void Close()
         {
-            //Instance.Close();
+            Console.WriteLine("Shutting down the browser...");
+            Instance.Close();
+            Instance.Dispose();
         }
 
         public static void WaitUntilVisible(By by)

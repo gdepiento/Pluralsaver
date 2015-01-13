@@ -5,6 +5,11 @@ namespace Pluralsaver.PluralsightPages
 {
     public class HomePage
     {
+        public static IWebElement MainSearchInput
+        {
+            get { return Driver.Instance.FindElement(By.CssSelector("span.search-home input[title='Search']")); }
+        }
+
         public static bool IsLogged
         {
             get
@@ -28,6 +33,15 @@ namespace Pluralsaver.PluralsightPages
         {
             if (!IsLogged)
                 throw new Exception("You expected to be logged in at this point");
+        }
+
+        public static void OpenCourse(string courseTitle)
+        {
+            MainSearchInput.SendKeys(courseTitle + Keys.Enter);
+
+            SearchResultsPage.NavigateToCourse(courseTitle);
+
+
         }
     }
 }
