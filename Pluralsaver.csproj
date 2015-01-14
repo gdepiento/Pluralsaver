@@ -69,6 +69,7 @@
     <Compile Include="PluralsightPages\CoursePage.cs" />
     <Compile Include="PluralsightPages\HomePage.cs" />
     <Compile Include="PluralsightPages\LoginPage.cs" />
+    <Compile Include="PluralsightPages\PlayerPage.cs" />
     <Compile Include="PluralsightPages\SearchResultsPage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

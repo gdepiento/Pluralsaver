@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.Extensions;
 
 namespace Pluralsaver.PluralsightPages
 {
@@ -49,8 +51,29 @@ namespace Pluralsaver.PluralsightPages
 
             // Create a dir for the current section
             var sectionTitleWithIndex = String.Format("{0}. {1}", sectionIndex, sectionTitle);
-            var sectionDir = CourseDownloader.CreateDir(courseDir, sectionTitleWithIndex);
-            Console.WriteLine("    Downloading section {0}: {1}", sectionTitleWithIndex, sectionDir);
+            var sectionFullPath = CourseDownloader.CreateDir(courseDir, sectionTitleWithIndex);
+            Console.WriteLine("    Downloading section {0}: {1}", sectionTitleWithIndex, sectionFullPath);
+
+            var clipElements = sectionElement.FindElements(By.CssSelector("div.content ul"));
+            for (var i = 0; i < clipElements.Count; i++)
+            {
+                DownloadClip(clipElements[i], i + 1);
+            }
+        }
+
+        private static void DownloadClip(IWebElement clipElement, int clipIndex)
+        {
+            var clipLinkElement = clipElement.FindElement(By.TagName("a"));
+            var clipTitle = clipLinkElement.Text;
+            Console.WriteLine("        Downloading clip {0}: {1}", clipIndex, clipTitle);
+
+            // Click on the clip and switch to the new window
+            clipLinkElement.Click();
+            Driver.Instance.SwitchTo().Window(Driver.Instance.WindowHandles.Last());
+
+            var clipUrl = ((IJavaScriptExecutor) Driver.Instance).ExecuteScript(
+                "return document.getElementById('video').getAttribute('src');").ToString();
+            Console.WriteLine("            Clip Url: {0}", clipUrl);
         }
     }
 }

@@ -35,9 +35,6 @@ namespace Pluralsaver
                     DownloadCourse(userCourseIndex);
                 }
             }
-
-            // Exit the program
-            //Environment.Exit(0);
         }
 
         private void ShowCourseList()
