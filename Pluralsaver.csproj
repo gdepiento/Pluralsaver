@@ -39,12 +39,15 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -77,10 +80,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="PluralsaverSettings.config">
+    <None Include="PluralsaverSettings.config" />
+    <None Include="PluralsaverSettings.config.sample">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="PluralsaverSettings.config.sample" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -113,6 +116,9 @@
     <ChromeDriverInitScriptPath>$(ChromeDriverToolsPath)Init.ps1</ChromeDriverInitScriptPath>
     <ChromeDriverPath>$(ChromeDriverInstallPath)content\chromedriver.exe</ChromeDriverPath>
     <PowerShellExe Condition="'$(PowerShellExe)'==''">%WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe</PowerShellExe>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>copy PluralSaverSettings.config.sample PluralSaverSettings.config</PostBuildEvent>
   </PropertyGroup>
   <Target Name="DownloadChromeDriver" Label="DownloadChromeDriverBuildTask">
     <Exec Condition="!Exists('$(ChromeDriverPath)')" Command="$(PowerShellExe) -NonInteractive -executionpolicy Unrestricted -command &quot;&amp; { &amp;'$(ChromeDriverInitScriptPath)' '$(ChromeDriverInstallPath)' '$(ChromeDriverToolsPath)'} &quot;" />
