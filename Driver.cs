@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -26,6 +27,17 @@ namespace Pluralsaver
         {
             var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(10));
             wait.Until(ExpectedConditions.ElementIsVisible(by));
+        }
+
+        public static void WaitUntilHidden(By by)
+        {
+            var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(10));
+            wait.Until(driver => !Instance.FindElement(by).Displayed);
+        }
+
+        public static void WaitSeconds(int seconds)
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(seconds));
         }
     }
 }

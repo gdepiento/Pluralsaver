@@ -3,9 +3,9 @@
   <Configuration>
     <PluralsightAccount Login="" Password="" />
     <Download Path="d:\Pluralsight" />
-    <DownloadDelay PlayClip="15" AfterClipTimeout="240" />
+    <DownloadDelay PlayClipTimeout="30" AfterClipTimeout="120" />
   </Configuration>
   <CoursesToDownload>
-    <Course></Course>
+    <Course>Learning To Program - Being A Better Programmer</Course>
   </CoursesToDownload>
 </Pluralsaver>

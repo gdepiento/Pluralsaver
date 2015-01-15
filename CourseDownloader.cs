@@ -7,12 +7,6 @@ namespace Pluralsaver
 {
     public class CourseDownloader
     {
-        private readonly PluralsaverSettings _settings;
-        public CourseDownloader(PluralsaverSettings settings)
-        {
-            _settings = settings;
-        }
-        
         public void Initialize()
         {
             ShowCourseList();
@@ -26,10 +20,10 @@ namespace Pluralsaver
                 if (userCourseIndex == 0)
                 {
                     // Download all courses
-                    Console.WriteLine("You have opted for downloading all {0} courses", _settings.CoursesToDownload.Count);
+                    Console.WriteLine("You have opted for downloading all {0} courses", PluralsaverSettings.CoursesToDownload.Count);
                     DownloadAllCourses();
                 }
-                else if ((userCourseIndex > 0) && (userCourseIndex <= _settings.CoursesToDownload.Count))
+                else if ((userCourseIndex > 0) && (userCourseIndex <= PluralsaverSettings.CoursesToDownload.Count))
                 {
                     // Download a specific course
                     DownloadCourse(userCourseIndex);
@@ -41,16 +35,16 @@ namespace Pluralsaver
         {
             Console.WriteLine("\nSettings file contains the following course titles available to download:");
 
-            for (var i = 0; i < _settings.CoursesToDownload.Count; i++)
+            for (var i = 0; i < PluralsaverSettings.CoursesToDownload.Count; i++)
             {
-                Console.WriteLine("{0}. {1}", i+1, _settings.CoursesToDownload[i]);
+                Console.WriteLine("{0}. {1}", i+1, PluralsaverSettings.CoursesToDownload[i]);
             }
         }
 
         private void DownloadAllCourses()
         {
             // Run DownloadCourse() method for each course index
-            for (int i = 1; i <= _settings.CoursesToDownload.Count; i++)
+            for (var i = 1; i <= PluralsaverSettings.CoursesToDownload.Count; i++)
             {
                 DownloadCourse(i);
             }
@@ -60,12 +54,12 @@ namespace Pluralsaver
         {
             Console.WriteLine("\n-------------------------------");
             // We need to subtract 1 from user input number to get the correct index as it null-based 
-            var courseTitle = _settings.CoursesToDownload[userCourseIndex - 1];
+            var courseTitle = PluralsaverSettings.CoursesToDownload[userCourseIndex - 1];
             Console.WriteLine("Downloading course #{0}: {1}", userCourseIndex, courseTitle);
 
             OpenCourseInBrowser(courseTitle);
 
-            CoursePage.Download(_settings);
+            CoursePage.Download();
 
             Console.WriteLine("Course download has been completed.");
 
@@ -79,7 +73,7 @@ namespace Pluralsaver
             HomePage.GoTo();
             HomePage.SignInButton.Click();
 
-            LoginPage.Login(_settings.Login, _settings.Password);
+            LoginPage.Login(PluralsaverSettings.Login, PluralsaverSettings.Password);
 
             HomePage.OpenCourse(courseTitle);
 

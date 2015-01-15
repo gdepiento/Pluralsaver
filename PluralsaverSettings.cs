@@ -11,24 +11,24 @@ namespace Pluralsaver
 {
     public class PluralsaverSettings
     {
-        private XElement _settings;
-        private XElement _configuration;
-        private XElement _pluralsightAccout;
-        private XElement _download;
-        private XElement _downloadDelay;
-        private XElement _coursesToDownload;
+        private static XElement _settings;
+        private static XElement _configuration;
+        private static XElement _pluralsightAccout;
+        private static XElement _download;
+        private static XElement _downloadDelay;
+        private static XElement _coursesToDownload;
         
-        public string Login
+        public static string Login
         {
             get { return _pluralsightAccout.Attribute("Login").Value; }
         }
 
-        public string Password
+        public static string Password
         {
             get { return _pluralsightAccout.Attribute("Password").Value; }
         }
 
-        public string Path
+        public static string Path
         {
             get
             {
@@ -39,26 +39,26 @@ namespace Pluralsaver
             }
         }
 
-        public int PlayClip
+        public static int PlayClipTimeout
         {
             get
             {
-                int playClipSeconds;
-                var playClip = _downloadDelay.Attribute("PlayClip").Value;
+                int playClipTimeoutSeconds;
+                var playClipTimeout = _downloadDelay.Attribute("PlayClipTimeout").Value;
 
                 try
                 {
-                    playClipSeconds = int.Parse(playClip);
+                    playClipTimeoutSeconds = int.Parse(playClipTimeout);
                 }
                 catch (FormatException)
                 {
-                    throw new Exception("Config File Error: PlayClip attribute contains a non-number value");
+                    throw new Exception("Config File Error: PlayClipTimeout attribute contains a non-number value");
                 }
-                return playClipSeconds;
+                return playClipTimeoutSeconds;
             }
         }
 
-        public int AfterClipTimeout
+        public static int AfterClipTimeout
         {
             get
             {
@@ -76,8 +76,8 @@ namespace Pluralsaver
                 return afterClipTimeoutSeconds;
             }
         }
-        
-        public PluralsaverSettings()
+
+        static PluralsaverSettings()
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Pluralsaver
             }
         }
 
-        public List<string> CoursesToDownload
+        public static List<string> CoursesToDownload
         {
             get
             {
@@ -97,7 +97,7 @@ namespace Pluralsaver
             }
         }
 
-        private void InitializeSettings()
+        private static void InitializeSettings()
         {
             Console.WriteLine("Initializing settings...");
             _settings = XElement.Load("PluralsaverSettings.config");
@@ -108,8 +108,8 @@ namespace Pluralsaver
             _downloadDelay = _configuration.XPathSelectElement("DownloadDelay");
             _coursesToDownload = _settings.XPathSelectElement("CoursesToDownload");
 
-            Console.WriteLine("* Pluralsight Account Login   : " + AfterClipTimeout);
-            Console.WriteLine("* Download Path               : " + Path);
+            Console.WriteLine("* Pluralsight Account Login   : {0}", Login);
+            Console.WriteLine("* Download Path               : {0}\n", Path);
         }
     }
 }
