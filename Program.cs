@@ -10,9 +10,16 @@ namespace Pluralsaver
     {
         static void Main(string[] args)
         {
-            var courseDownloader = new CourseDownloader();
+            try
+            {
+                var courseDownloader = new CourseDownloader();
 
-            courseDownloader.Initialize();
+                courseDownloader.Initialize();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n\nA critical error occured in the application: " + ex.InnerException);                
+            }
         }
     }
 }
