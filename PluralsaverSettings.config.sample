@@ -1,11 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Pluralsaver>
   <Configuration>
+    <!--<PluralsightAccount Login="your-login" Password="Pa$$w0rd" />-->
     <PluralsightAccount Login="" Password="" />
+    <!-- Download Path is the base directory for all your course downloads -->
     <Download Path="d:\Pluralsight" />
+    <!-- It is recommended to have timeouts to make the download look more human-like -->
     <DownloadDelay PlayClipTimeout="30" AfterClipTimeout="120" />
   </Configuration>
   <CoursesToDownload>
+    <!-- You can specify one or more courses to download. Empty Course elements are not allowed -->
+    <!--<Course></Course>-->
+    <!--<Course></Course>-->
+    <!--<Course></Course>-->
     <Course>Learning To Program - Being A Better Programmer</Course>
   </CoursesToDownload>
 </Pluralsaver>

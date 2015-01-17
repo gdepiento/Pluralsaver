@@ -83,6 +83,7 @@
     <None Include="PluralsaverSettings.config" />
     <None Include="PluralsaverSettings.config.sample">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -118,7 +119,7 @@
     <PowerShellExe Condition="'$(PowerShellExe)'==''">%WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe</PowerShellExe>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>copy PluralSaverSettings.config.sample PluralSaverSettings.config</PostBuildEvent>
+    <PostBuildEvent>copy PluralsaverSettings.config.sample PluralsaverSettings.config</PostBuildEvent>
   </PropertyGroup>
   <Target Name="DownloadChromeDriver" Label="DownloadChromeDriverBuildTask">
     <Exec Condition="!Exists('$(ChromeDriverPath)')" Command="$(PowerShellExe) -NonInteractive -executionpolicy Unrestricted -command &quot;&amp; { &amp;'$(ChromeDriverInitScriptPath)' '$(ChromeDriverInstallPath)' '$(ChromeDriverToolsPath)'} &quot;" />
