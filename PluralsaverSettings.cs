@@ -4,24 +4,18 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Microsoft.SqlServer.Server;
 
 namespace Pluralsaver
 {
     public class PluralsaverSettings
     {
-        private const string InitializingErrorText = "An error occured while application initialization: ";
+        private const string InitializingErrorText = "An error occured while parsing PluralsightSettings.config file: ";
         private static XElement _settings;
         private static XElement _configuration;
         private static XElement _pluralsightAccout;
         private static XElement _download;
         private static XElement _downloadDelay;
         private static XElement _coursesToDownload;
-
-        static PluralsaverSettings()
-        {
-            InitializeSettings();
-        }
 
         public static string Login
         {
@@ -32,7 +26,7 @@ namespace Pluralsaver
                 {
                     login = _pluralsightAccout.Attribute("Login").Value;
                 }
-                catch (Exception ex)
+                catch
                 {
                     throw new Exception(InitializingErrorText + "Login attribute in PluralsightAccount is missing!");
                 }
@@ -52,7 +46,7 @@ namespace Pluralsaver
                 {
                     password = _pluralsightAccout.Attribute("Password").Value;
                 }
-                catch (Exception ex)
+                catch
                 {
                     throw new Exception(InitializingErrorText + "Password attribute in PluralsightAccount is missing!");
                 }
@@ -60,6 +54,26 @@ namespace Pluralsaver
                 if (password.Length == 0)
                     throw new Exception(InitializingErrorText + "Password attribute is empty!");
                 return password;
+            }
+        }
+
+        public static string Browser
+        {
+            get
+            {
+                string browserName;
+                try
+                {
+                    browserName = _download.Attribute("Browser").Value;
+                }
+                catch
+                {
+                    throw new Exception(InitializingErrorText + "Browser attribute in Download element is missing!");
+                }
+
+                if ((browserName == "Chrome") || (browserName == "Firefox"))
+                    return browserName;
+                else throw new Exception(InitializingErrorText + "Browser attribute in Download element is incorrect. Supported values are: Chrome, Firefox");
             }
         }
 
@@ -72,7 +86,7 @@ namespace Pluralsaver
                 {
                     path = new DirectoryInfo(_download.Attribute("Path").Value);
                 }
-                catch (Exception ex)
+                catch
                 {
                     throw new Exception(InitializingErrorText + "Path attribute in Download element is missing!");
                 }
@@ -139,7 +153,7 @@ namespace Pluralsaver
             }
         }
 
-        private static void InitializeSettings()
+        public static void InitializeSettings()
         {
             Console.WriteLine("Initializing settings...");
             _settings = XElement.Load("PluralsaverSettings.config");
@@ -155,7 +169,9 @@ namespace Pluralsaver
             Console.WriteLine("* Download Path                : {0}", Path);
             Console.WriteLine("* Play Clip Timeout            : {0}", PlayClipTimeout);
             Console.WriteLine("* After Clip Timeout           : {0}", AfterClipTimeout);
-            
+            Console.WriteLine("* Browser to Use               : {0}", Browser);
+
+            CourseDownloader.ShowCourseList();
         }
     }
 }

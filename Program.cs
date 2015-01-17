@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pluralsaver
 {
@@ -12,8 +8,9 @@ namespace Pluralsaver
         {
             try
             {
-                var courseDownloader = new CourseDownloader();
+                PluralsaverSettings.InitializeSettings();
 
+                var courseDownloader = new CourseDownloader();
                 courseDownloader.Initialize();
             }
             catch (Exception ex)

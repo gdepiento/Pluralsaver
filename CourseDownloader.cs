@@ -9,7 +9,6 @@ namespace Pluralsaver
     {
         public void Initialize()
         {
-            ShowCourseList();
             Console.WriteLine("\nPlease select a course number or type '0' to download all. Entering any other value will exit the program: ");
             
             var userInput = Console.ReadLine();
@@ -31,13 +30,13 @@ namespace Pluralsaver
             }
         }
 
-        private void ShowCourseList()
+        public static void ShowCourseList()
         {
-            Console.WriteLine("\nSettings file contains the following course titles available to download:");
+            Console.WriteLine("\n* Courses list (from PluralsaverSettings.config file)");
 
             for (var i = 0; i < PluralsaverSettings.CoursesToDownload.Count; i++)
             {
-                Console.WriteLine("{0}. {1}", i+1, PluralsaverSettings.CoursesToDownload[i]);
+                Console.WriteLine("    {0}. {1}", i+1, PluralsaverSettings.CoursesToDownload[i]);
             }
         }
 

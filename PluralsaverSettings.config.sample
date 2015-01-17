@@ -3,16 +3,17 @@
   <Configuration>
     <!--<PluralsightAccount Login="your-login" Password="Pa$$w0rd" />-->
     <PluralsightAccount Login="" Password="" />
+    <!-- Available browsers are: Chrome, Firefox -->
     <!-- Download Path is the base directory for all your course downloads -->
-    <Download Path="d:\Pluralsight" />
+    <Download Browser="Chrome" Path="d:\Pluralsight" />
     <!-- It is recommended to have timeouts to make the download look more human-like -->
     <DownloadDelay PlayClipTimeout="30" AfterClipTimeout="120" />
   </Configuration>
   <CoursesToDownload>
     <!-- You can specify one or more courses to download. Empty Course elements are not allowed -->
-    <!--<Course></Course>-->
-    <!--<Course></Course>-->
-    <!--<Course></Course>-->
     <Course>Learning To Program - Being A Better Programmer</Course>
+    <!--<Course></Course>-->
+    <!--<Course></Course>-->
+    <!--<Course></Course>-->
   </CoursesToDownload>
 </Pluralsaver>

@@ -2,6 +2,7 @@
 using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 
 namespace Pluralsaver
@@ -12,7 +13,16 @@ namespace Pluralsaver
 
         public static void Initialize()
         {
-            Instance = new ChromeDriver();
+            switch (PluralsaverSettings.Browser)
+            {
+                case "Chrome":
+                    Instance = new ChromeDriver();
+                    break;
+                case "Firefox":
+                    Instance = new FirefoxDriver();
+                    break;
+            }
+
             Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
         }
 
