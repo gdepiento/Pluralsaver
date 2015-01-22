@@ -56,7 +56,7 @@ namespace Pluralsaver.PluralsightPages
             var sectionTitle = sectionElement.FindElement(By.CssSelector("p.title a")).Text;
 
             // Create a dir for the current section
-            var sectionTitleWithIndex = String.Format("{0}. {1}", sectionIndex, sectionTitle);
+            var sectionTitleWithIndex = String.Format("{0:D2}. {1}", sectionIndex, sectionTitle);
             var sectionFullPath = CourseDownloader.CreateDir(courseDir, sectionTitleWithIndex);
             Console.WriteLine("    Downloading section {0}: {1}", sectionTitleWithIndex, sectionFullPath);
 
@@ -70,7 +70,7 @@ namespace Pluralsaver.PluralsightPages
         private static void DownloadClip(IWebElement clipElement, int clipIndex, string sectionFullPath)
         {
             var clipLinkElement = clipElement.FindElement(By.TagName("a"));
-            var clipTitle = string.Format("{0}. {1}", clipIndex, clipLinkElement.Text);
+            var clipTitle = string.Format("{0:D2}. {1}", clipIndex, clipLinkElement.Text);
             Console.WriteLine("        Downloading clip: {0}", clipTitle);
 
             // Remove this annoying survey widget that receives click insted of the elements sometimes
