@@ -15,7 +15,8 @@ namespace Pluralsaver
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\n\nA critical error occured in the application: " + ex.InnerException);                
+                Console.WriteLine("\n\nA critical error occured in the application: {0}\n" +
+                    "Inner exception: {1}", ex.Message, ex.InnerException);                
             }
         }
     }
