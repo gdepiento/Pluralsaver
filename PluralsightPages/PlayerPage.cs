@@ -17,7 +17,13 @@ namespace Pluralsaver.PluralsightPages
 
         static IWebElement ClipDurationSpan
         {
-            get { return Driver.Instance.FindElement(By.CssSelector("span#clipDurationText")); }
+            get
+            {
+                var clipDurationSpanSelector = By.CssSelector("span#clipDurationText");
+                Driver.WaitUntilNotEmptyText(clipDurationSpanSelector);
+
+                return Driver.Instance.FindElement(clipDurationSpanSelector);
+            }
         }
 
         static int ClipDurationInSeconds

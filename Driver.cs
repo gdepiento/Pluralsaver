@@ -45,6 +45,12 @@ namespace Pluralsaver
             wait.Until(driver => !Instance.FindElement(by).Displayed);
         }
 
+        public static void WaitUntilNotEmptyText(By by)
+        {
+            var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(10));
+            wait.Until(driver => Instance.FindElement(by).Text != string.Empty);
+        }
+
         public static void WaitSeconds(int seconds)
         {
             Thread.Sleep(TimeSpan.FromSeconds(seconds));
