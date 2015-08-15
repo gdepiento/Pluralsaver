@@ -6,20 +6,20 @@ namespace Pluralsaver.PluralsightPages
     {
         public static IWebElement UserNameInput
         {
-            get { return Driver.Instance.FindElement(By.Id("userHandle")); }
+            get { return Driver.Instance.FindElement(By.Id("Username")); }
         }
         public static IWebElement PasswordInput
         {
-            get { return Driver.Instance.FindElement(By.Id("password")); }
+            get { return Driver.Instance.FindElement(By.Id("Password")); }
         }
         public static IWebElement SubmitButton
         {
-            get { return Driver.Instance.FindElement(By.Id("submit")); }
+            get { return Driver.Instance.FindElement(By.Id("login")); }
         }
 
         static LoginPage()
         {
-            Driver.WaitUntilVisible(By.Id("userHandle"));
+            Driver.WaitUntilVisible(By.Id("Username"));
         }
 
         public static void Login(string login, string password)
