@@ -84,10 +84,9 @@ namespace Pluralsaver
             var fullDirPath = String.Format("{0}\\{1}", parentDir, dirName);
 
             // Remove directory completely if already exitsts
-            if (Directory.Exists(fullDirPath))
-                Directory.Delete(fullDirPath, true);
+            if (!Directory.Exists(fullDirPath))
+                Directory.CreateDirectory(fullDirPath);
 
-            Directory.CreateDirectory(fullDirPath);
             return fullDirPath;
         }
 

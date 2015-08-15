@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 
@@ -73,28 +74,46 @@ namespace Pluralsaver.PluralsightPages
             var clipTitle = string.Format("{0:D2}. {1}", clipIndex, clipLinkElement.Text);
             Console.WriteLine("        Downloading clip: {0}", clipTitle);
 
-            // Remove this annoying survey widget that receives click insted of the elements sometimes
-            CloseSurveyWidget();
+            var clipLocalPath = string.Format(@"{0}\{1}", sectionFullPath,
+                CourseDownloader.RemoveFilenameInvalidCharacters(clipTitle));
 
-            // Click on the clip and switch to the new window
-            clipLinkElement.Click();
-            Driver.Instance.SwitchTo().Window(Driver.Instance.WindowHandles.Last());
-
-            var clipUrl = PlayerPage.GetCurrentClipUrl();
-            var clipFullPath = string.Format(@"{0}\{1}{2}", sectionFullPath,
-                CourseDownloader.RemoveFilenameInvalidCharacters(clipTitle),
-                Path.GetExtension(clipUrl));
-
-            using (var webClient = new WebClient())
+            // If the clip file exists locally, skip to the next one
+            // NB: we may have some clips downloaded if, for some reason, previous download failed
+            // NB #2: at this point we don't know the video extension!
+            if (CheckIfAlreadyDownloaded(sectionFullPath, CourseDownloader.RemoveFilenameInvalidCharacters(clipTitle)))
             {
-                webClient.DownloadFile(clipUrl, clipFullPath);
+                Console.WriteLine("        Clip already exists: {0}", clipLocalPath);
             }
-            
-            Driver.Instance.Close();
-            Driver.Instance.SwitchTo().Window(Driver.Instance.WindowHandles.FirstOrDefault());
+            else
+            {
+                // Remove this annoying survey widget that receives click insted of the elements sometimes
+                CloseSurveyWidget();
 
-            // Again, we want to mimic a human so give it a little timeout after the section
-            Driver.WaitSeconds(PluralsaverSettings.AfterClipTimeout);
+                // Click on the clip and switch to the new window
+                clipLinkElement.Click();
+                Driver.Instance.SwitchTo().Window(Driver.Instance.WindowHandles.Last());
+
+                var clipUrl = PlayerPage.GetCurrentClipUrl();
+                var clipFullPath = string.Format(@"{0}\{1}{2}", sectionFullPath,
+                    CourseDownloader.RemoveFilenameInvalidCharacters(clipTitle),
+                    Path.GetExtension(clipUrl));
+
+                using (var webClient = new WebClient())
+                {
+                    webClient.DownloadFile(clipUrl, clipFullPath);
+                }
+
+                Driver.Instance.Close();
+                Driver.Instance.SwitchTo().Window(Driver.Instance.WindowHandles.FirstOrDefault());
+
+                // Again, we want to mimic a human so give it a little timeout after the section
+                Driver.WaitSeconds(PluralsaverSettings.AfterClipTimeout);
+            }
+        }
+
+        private static bool CheckIfAlreadyDownloaded(string path, string extensionlessFileName)
+        {
+            return Directory.GetFiles(path, extensionlessFileName + "*").Length > 0;
         }
 
         private static void CloseSurveyWidget()

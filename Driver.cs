@@ -35,19 +35,19 @@ namespace Pluralsaver
 
         public static void WaitUntilVisible(By by)
         {
-            var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(60));
             wait.Until(ExpectedConditions.ElementIsVisible(by));
         }
 
         public static void WaitUntilHidden(By by)
         {
-            var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(60));
             wait.Until(driver => !Instance.FindElement(by).Displayed);
         }
 
         public static void WaitUntilNotEmptyText(By by)
         {
-            var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(60));
             wait.Until(driver => Instance.FindElement(by).Text != string.Empty);
         }
 
