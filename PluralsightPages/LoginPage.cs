@@ -28,7 +28,7 @@ namespace Pluralsaver.PluralsightPages
             PasswordInput.SendKeys(password);
             SubmitButton.Click();
 
-            HomePage.VerifyLoggedState();
+            //HomePage.VerifyLoggedState();
         }
     }
 }

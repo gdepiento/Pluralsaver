@@ -70,11 +70,11 @@ namespace Pluralsaver
             Driver.Initialize();
 
             HomePage.GoTo();
-            HomePage.SignInButton.Click();
+            HomePage.SignInLink.Click();
 
-            LoginPage.Login(PluralsaverSettings.Login, PluralsaverSettings.Password);
+            //LoginPage.Login(PluralsaverSettings.Login, PluralsaverSettings.Password);
 
-            HomePage.OpenCourse(courseTitle);
+            //HomePage.OpenCourse(courseTitle);
 
         }
 
