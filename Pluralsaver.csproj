@@ -82,7 +82,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="PluralsaverSettings.config" />
+    <None Include="PluralsaverSettings.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="PluralsaverSettings.sample">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -106,9 +108,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy PluralsaverSettings.sample PluralsaverSettings.config</PostBuildEvent>
-  </PropertyGroup>
   <ItemGroup>
     <Content Include="packages\Selenium.WebDriver.ChromeDriver.2.21.0.0\driver\chromedriver.exe">
       <Link>chromedriver.exe</Link>
