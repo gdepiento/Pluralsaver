@@ -12,7 +12,7 @@ namespace Pluralsaver.PluralsightPages
         {
             get { return Driver.Instance.FindElement(By.Id("Password")); }
         }
-        public static IWebElement SubmitButton
+        public static IWebElement SigninButton
         {
             get { return Driver.Instance.FindElement(By.Id("login")); }
         }
@@ -26,9 +26,9 @@ namespace Pluralsaver.PluralsightPages
         {
             UserNameInput.SendKeys(login);
             PasswordInput.SendKeys(password);
-            SubmitButton.Click();
+            SigninButton.Click();
 
-            //HomePage.VerifyLoggedState();
+            HomePage.VerifyLoggedState();
         }
     }
 }

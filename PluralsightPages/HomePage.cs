@@ -5,19 +5,26 @@ namespace Pluralsaver.PluralsightPages
 {
     public class HomePage
     {
-        //    public static IWebElement MainSearchInput
-        //    {
-        //        get { return Driver.Instance.FindElement(By.CssSelector("span.search-home input[title='Search']")); }
-        //    }
+        public static IWebElement MainSearchInput
+        {
+            get
+            {
+                var searchInput = Driver.Instance.FindElement(By.Id("searchInput"));
+                searchInput.Click();
 
-        //    public static bool IsLogged
-        //    {
-        //        get
-        //        {
-        //            var accountElement = Driver.Instance.FindElement(By.ClassName("ui-account"));
-        //            return accountElement.Displayed;
-        //        }
-        //    }
+                var mainSearchInput = Driver.Instance.FindElement(By.Id("search_input"));
+                return mainSearchInput;
+            }
+        }
+
+        public static bool IsLogged
+        {
+            get
+            {
+                var accountElement = Driver.Instance.FindElement(By.ClassName("header-bar__account-details"));
+                return accountElement.Displayed;
+            }
+        }
         public static IWebElement SignInLink
         {
             get { return Driver.Instance.FindElement(By.LinkText("Sign in")); }
@@ -33,19 +40,17 @@ namespace Pluralsaver.PluralsightPages
             Driver.WaitUntilVisible(By.ClassName("logo"));
         }
 
-    //    public static void VerifyLoggedState()
-    //    {
-    //        if (!IsLogged)
-    //            throw new Exception("You expected to be logged in at this point");
-    //    }
+        public static void VerifyLoggedState()
+        {
+            if (!IsLogged)
+                throw new Exception("You expected to be logged in at this point");
+        }
 
-    //    public static void OpenCourse(string courseTitle)
-    //    {
-    //        MainSearchInput.SendKeys(courseTitle + Keys.Enter);
+        public static void OpenCourse(string courseTitle)
+        {
+            MainSearchInput.SendKeys(courseTitle + Keys.Enter);
 
-    //        SearchResultsPage.NavigateToCourse(courseTitle);
-
-
-    //    }
+            SearchResultsPage.NavigateToCourse(courseTitle);
+        }
     }
 }

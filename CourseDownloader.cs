@@ -72,10 +72,9 @@ namespace Pluralsaver
             HomePage.GoTo();
             HomePage.SignInLink.Click();
 
-            //LoginPage.Login(PluralsaverSettings.Login, PluralsaverSettings.Password);
+            LoginPage.Login(PluralsaverSettings.Login, PluralsaverSettings.Password);
 
-            //HomePage.OpenCourse(courseTitle);
-
+            HomePage.OpenCourse(courseTitle);
         }
 
         public static string CreateDir(string parentDir, string dirName)

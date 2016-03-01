@@ -7,7 +7,7 @@ namespace Pluralsaver.PluralsightPages
     {
         static SearchResultsPage()
         {
-            Driver.WaitUntilVisible(By.XPath("//h1[.='Search']"));
+            Driver.WaitUntilVisible(By.ClassName("l-search"));
         }
 
         public static void NavigateToCourse(string courseTitle)
