@@ -2,6 +2,7 @@
 using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 
 namespace Pluralsaver
@@ -12,7 +13,16 @@ namespace Pluralsaver
 
         public static void Initialize()
         {
-            Instance = new ChromeDriver();
+            switch (PluralsaverSettings.Browser)
+            {
+                case "Chrome":
+                    Instance = new ChromeDriver();
+                    break;
+                case "Firefox":
+                    Instance = new FirefoxDriver();
+                    break;
+            }
+
             Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
         }
 
@@ -33,6 +43,12 @@ namespace Pluralsaver
         {
             var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(10));
             wait.Until(driver => !Instance.FindElement(by).Displayed);
+        }
+
+        public static void WaitUntilNotEmptyText(By by)
+        {
+            var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(10));
+            wait.Until(driver => Instance.FindElement(by).Text != string.Empty);
         }
 
         public static void WaitSeconds(int seconds)

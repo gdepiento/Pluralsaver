@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pluralsaver
 {
@@ -10,9 +6,18 @@ namespace Pluralsaver
     {
         static void Main(string[] args)
         {
-            var courseDownloader = new CourseDownloader();
+            try
+            {
+                PluralsaverSettings.InitializeSettings();
 
-            courseDownloader.Initialize();
+                var courseDownloader = new CourseDownloader();
+                courseDownloader.Initialize();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n\nA critical error occurred in the application: {0}\n" +
+                    "Inner exception: {1}", ex.Message, ex.InnerException);                
+            }
         }
     }
 }

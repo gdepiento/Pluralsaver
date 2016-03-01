@@ -17,7 +17,13 @@ namespace Pluralsaver.PluralsightPages
 
         static IWebElement ClipDurationSpan
         {
-            get { return Driver.Instance.FindElement(By.CssSelector("span#clipDurationText")); }
+            get
+            {
+                var clipDurationSpanSelector = By.CssSelector("span#clipDurationText");
+                Driver.WaitUntilNotEmptyText(clipDurationSpanSelector);
+
+                return Driver.Instance.FindElement(clipDurationSpanSelector);
+            }
         }
 
         static int ClipDurationInSeconds
@@ -44,10 +50,17 @@ namespace Pluralsaver.PluralsightPages
 
         private static void WaitPlayClipTimeout()
         {
-            if (ClipDurationInSeconds < PluralsaverSettings.PlayClipTimeout)
-                Driver.WaitSeconds(ClipDurationInSeconds - 10);
-            else
-                Driver.WaitSeconds(PluralsaverSettings.PlayClipTimeout);
+            const int downloadTimeSpan = 15;
+
+            if (ClipDurationInSeconds > downloadTimeSpan)
+            {
+                // Find out how long we can play clip for allowing some time for downloading
+                var maxPossibleClipPlayTime = ClipDurationInSeconds - downloadTimeSpan;
+
+                Driver.WaitSeconds(maxPossibleClipPlayTime < PluralsaverSettings.PlayClipTimeout
+                    ? maxPossibleClipPlayTime
+                    : PluralsaverSettings.PlayClipTimeout);
+            }
         }
     }
 }

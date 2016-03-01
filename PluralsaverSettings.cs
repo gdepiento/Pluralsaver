@@ -1,7 +1,5 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -11,28 +9,88 @@ namespace Pluralsaver
 {
     public class PluralsaverSettings
     {
+        private const string InitializingErrorText = "An error occured while parsing PluralsightSettings.config file: ";
         private static XElement _settings;
         private static XElement _configuration;
         private static XElement _pluralsightAccout;
         private static XElement _download;
         private static XElement _downloadDelay;
         private static XElement _coursesToDownload;
-        
+
         public static string Login
         {
-            get { return _pluralsightAccout.Attribute("Login").Value; }
+            get
+            {
+                string login;
+                try
+                {
+                    login = _pluralsightAccout.Attribute("Login").Value;
+                }
+                catch
+                {
+                    throw new Exception(InitializingErrorText + "Login attribute in PluralsightAccount is missing!");
+                }
+
+                if (login.Length == 0)
+                    throw new Exception(InitializingErrorText + "Login attribute is empty!");
+                return login;
+            }
         }
 
         public static string Password
         {
-            get { return _pluralsightAccout.Attribute("Password").Value; }
+            get
+            {
+                string password;
+                try
+                {
+                    password = _pluralsightAccout.Attribute("Password").Value;
+                }
+                catch
+                {
+                    throw new Exception(InitializingErrorText + "Password attribute in PluralsightAccount is missing!");
+                }
+
+                if (password.Length == 0)
+                    throw new Exception(InitializingErrorText + "Password attribute is empty!");
+                return password;
+            }
+        }
+
+        public static string Browser
+        {
+            get
+            {
+                string browserName;
+                try
+                {
+                    browserName = _download.Attribute("Browser").Value;
+                }
+                catch
+                {
+                    throw new Exception(InitializingErrorText + "Browser attribute in Download element is missing!");
+                }
+
+                if ((browserName == "Chrome") || (browserName == "Firefox"))
+                    return browserName;
+                else throw new Exception(InitializingErrorText + "Browser attribute in Download element is incorrect. Supported values are: Chrome, Firefox");
+            }
         }
 
         public static string Path
         {
             get
             {
-                var path = new DirectoryInfo(_download.Attribute("Path").Value);
+                DirectoryInfo path;
+                try
+                {
+                    path = new DirectoryInfo(_download.Attribute("Path").Value);
+                }
+                catch
+                {
+                    throw new Exception(InitializingErrorText + "Path attribute in Download element is missing!");
+                }
+
                 if (path.Exists)
                     return path.ToString();
                 else throw new Exception("Download Path does not exist");
@@ -44,15 +102,20 @@ namespace Pluralsaver
             get
             {
                 int playClipTimeoutSeconds;
-                var playClipTimeout = _downloadDelay.Attribute("PlayClipTimeout").Value;
 
                 try
                 {
+                    var playClipTimeout = _downloadDelay.Attribute("PlayClipTimeout").Value;
                     playClipTimeoutSeconds = int.Parse(playClipTimeout);
+                }
+                catch (NullReferenceException)
+                {
+                    throw new Exception(InitializingErrorText +
+                                        "PlayClipTimeout attribute in DownloadDelay element is missing!\n");
                 }
                 catch (FormatException)
                 {
-                    throw new Exception("Config File Error: PlayClipTimeout attribute contains a non-number value");
+                    throw new Exception(InitializingErrorText + "PlayClipTimeout attribute contains a non-numeric value");
                 }
                 return playClipTimeoutSeconds;
             }
@@ -63,29 +126,22 @@ namespace Pluralsaver
             get
             {
                 int afterClipTimeoutSeconds;
-                var afterClipTimeout = _downloadDelay.Attribute("AfterClipTimeout").Value;
 
                 try
                 {
-                    afterClipTimeoutSeconds = int.Parse(afterClipTimeout);
+                    var playClipTimeout = _downloadDelay.Attribute("AfterClipTimeout").Value;
+                    afterClipTimeoutSeconds = int.Parse(playClipTimeout);
+                }
+                catch (NullReferenceException)
+                {
+                    throw new Exception(InitializingErrorText +
+                                        "AfterClipTimeout attribute in DownloadDelay element is missing!\n");
                 }
                 catch (FormatException)
                 {
-                    throw new Exception("Config File Error: AfterClipTimeout attribute contains a non-number value");
+                    throw new Exception(InitializingErrorText + "AfterClipTimeout attribute contains a non-numeric value");
                 }
                 return afterClipTimeoutSeconds;
-            }
-        }
-
-        static PluralsaverSettings()
-        {
-            try
-            {
-                InitializeSettings();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An error has occurred during initialization: " + ex.Message);
             }
         }
 
@@ -97,7 +153,7 @@ namespace Pluralsaver
             }
         }
 
-        private static void InitializeSettings()
+        public static void InitializeSettings()
         {
             Console.WriteLine("Initializing settings...");
             _settings = XElement.Load("PluralsaverSettings.config");
@@ -108,8 +164,14 @@ namespace Pluralsaver
             _downloadDelay = _configuration.XPathSelectElement("DownloadDelay");
             _coursesToDownload = _settings.XPathSelectElement("CoursesToDownload");
 
-            Console.WriteLine("* Pluralsight Account Login   : {0}", Login);
-            Console.WriteLine("* Download Path               : {0}\n", Path);
+            Console.WriteLine("* Pluralsight Account Login    : {0}", Login);
+            Console.WriteLine("* Pluralsight Account Password : {0}", new String('*', Password.Length));
+            Console.WriteLine("* Download Path                : {0}", Path);
+            Console.WriteLine("* Play Clip Timeout            : {0}", PlayClipTimeout);
+            Console.WriteLine("* After Clip Timeout           : {0}", AfterClipTimeout);
+            Console.WriteLine("* Browser to Use               : {0}", Browser);
+
+            CourseDownloader.ShowCourseList();
         }
     }
 }
