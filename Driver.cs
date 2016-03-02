@@ -24,6 +24,7 @@ namespace Pluralsaver
             }
 
             Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
+            Instance.Manage().Window.Maximize();
         }
 
         public static void Close()
