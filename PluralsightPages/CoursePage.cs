@@ -61,7 +61,7 @@ namespace Pluralsaver.PluralsightPages
             var sectionFullPath = CourseDownloader.CreateDir(courseDir, sectionTitleWithIndex);
             Console.WriteLine("    Downloading section {0}: {1}", sectionTitleWithIndex, sectionFullPath);
 
-            var clipElements = sectionElement.FindElements(By.CssSelector("div.accordian__content ul"));
+            var clipElements = sectionElement.FindElements(By.CssSelector("div.accordian__content ul li"));
             for (var i = 0; i < clipElements.Count; i++)
             {
                 DownloadClip(clipElements[i], i + 1, sectionFullPath);
@@ -75,28 +75,25 @@ namespace Pluralsaver.PluralsightPages
             Console.WriteLine("        Downloading clip: {0}", clipTitle);
 
             var clipLocalPath = string.Format(@"{0}\{1}", sectionFullPath,
-                CourseDownloader.RemoveFilenameInvalidCharacters(clipTitle));
+                CourseDownloader.RemoveInvalidCharacters(clipTitle));
 
             // If the clip file exists locally, skip to the next one
             // NB: we may have some clips downloaded, e.g. previous download failed for some reason
             // NB #2: at this point we don't know the video extension!
-            if (CheckIfAlreadyDownloaded(sectionFullPath, CourseDownloader.RemoveFilenameInvalidCharacters(clipTitle)))
+            if (CheckIfAlreadyDownloaded(sectionFullPath, CourseDownloader.RemoveInvalidCharacters(clipTitle)))
             {
                 Console.WriteLine("        Clip already exists: {0}", clipLocalPath);
             }
             else
             {
-                // Remove this annoying survey widget that receives click insted of the elements sometimes
-                //CloseSurveyWidget();
-
                 // Click on the clip and switch to the new window
                 clipLinkElement.Click();
                 Driver.Instance.SwitchTo().Window(Driver.Instance.WindowHandles.Last());
 
                 var clipUrl = PlayerPage.GetCurrentClipUrl();
                 var clipFullPath = string.Format(@"{0}\{1}{2}", sectionFullPath,
-                    CourseDownloader.RemoveFilenameInvalidCharacters(clipTitle),
-                    Path.GetExtension(clipUrl));
+                    CourseDownloader.RemoveInvalidCharacters(clipTitle),
+                    Path.GetExtension(clipUrl.AbsolutePath));
 
                 using (var webClient = new WebClient())
                 {

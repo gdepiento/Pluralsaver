@@ -79,7 +79,7 @@ namespace Pluralsaver
 
         public static string CreateDir(string parentDir, string dirName)
         {
-            dirName = RemoveFilenameInvalidCharacters(dirName);
+            dirName = RemoveInvalidCharacters(dirName);
             var fullDirPath = String.Format("{0}\\{1}", parentDir, dirName);
 
             // Remove directory completely if already exitsts
@@ -89,7 +89,7 @@ namespace Pluralsaver
             return fullDirPath;
         }
 
-        public static string RemoveFilenameInvalidCharacters(string fileName)
+        public static string RemoveInvalidCharacters(string fileName)
         {
             var invalidChars = Path.GetInvalidFileNameChars();
 

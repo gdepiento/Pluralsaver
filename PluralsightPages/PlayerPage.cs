@@ -1,17 +1,18 @@
-﻿using OpenQA.Selenium;
+﻿using System;
+using OpenQA.Selenium;
 
 namespace Pluralsaver.PluralsightPages
 {
     public class PlayerPage
     {
         
-        static string ClipUrl
+        static Uri ClipUrl
         {
             get
             {
-                return ((IJavaScriptExecutor)Driver.Instance).ExecuteScript(
-                    "return document.getElementById('video').getAttribute('src');").ToString();
-
+                var clipUriString = ((IJavaScriptExecutor)Driver.Instance).ExecuteScript(
+                    "return document.getElementsByTagName('video')[0].getAttribute('src');").ToString();
+                return new Uri(clipUriString);
             }
         }
 
@@ -19,9 +20,7 @@ namespace Pluralsaver.PluralsightPages
         {
             get
             {
-                var clipDurationSpanSelector = By.CssSelector("span#clipDurationText");
-                Driver.WaitUntilNotEmptyText(clipDurationSpanSelector);
-
+                var clipDurationSpanSelector = By.CssSelector("span.total-time");
                 return Driver.Instance.FindElement(clipDurationSpanSelector);
             }
         }
@@ -37,10 +36,10 @@ namespace Pluralsaver.PluralsightPages
             }
         }
 
-        public static string GetCurrentClipUrl()
+        public static Uri GetCurrentClipUrl()
         {
             // To grab a video url we need to make sure that it's loaded
-            Driver.WaitUntilHidden(By.Id("clipLoadingDiv"));
+            Driver.WaitUntilVisible(By.ClassName("icon-pause"));
 
             // We also want to wait a timeout to mimic a human watching the video
             WaitPlayClipTimeout();
