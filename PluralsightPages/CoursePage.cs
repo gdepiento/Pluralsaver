@@ -13,7 +13,7 @@ namespace Pluralsaver.PluralsightPages
     {
         public static IWebElement ExpandAllLink
         {
-            get { return Driver.Instance.FindElement(By.Id("expandAll")); }
+            get { return Driver.Instance.FindElement(By.LinkText("Expand all")); }
         }
 
         public static bool IsExpanded
@@ -33,7 +33,7 @@ namespace Pluralsaver.PluralsightPages
         {
             Initialize();
 
-            var currentCourseTitle = Driver.Instance.FindElement(By.CssSelector("h1.course-title")).Text;
+            var currentCourseTitle = Driver.Instance.FindElement(By.CssSelector("h1.course-hero__title")).Text;
 
             Console.WriteLine("Downloading course: {0}", currentCourseTitle);
             
@@ -42,7 +42,7 @@ namespace Pluralsaver.PluralsightPages
             Console.WriteLine("Into {0}", courseDir);
 
 
-            var sectionElementList = Driver.Instance.FindElements(By.CssSelector("div.section"));
+            var sectionElementList = Driver.Instance.FindElements(By.CssSelector("li.accordian__section"));
             Console.WriteLine("Number of sections: {0}", sectionElementList.Count);
 
             for (var sectionIndex = 0; sectionIndex < sectionElementList.Count; sectionIndex++)
@@ -54,14 +54,14 @@ namespace Pluralsaver.PluralsightPages
 
         private static void DownloadSection(IWebElement sectionElement, int sectionIndex, string courseDir)
         {
-            var sectionTitle = sectionElement.FindElement(By.CssSelector("p.title a")).Text;
+            var sectionTitle = sectionElement.FindElement(By.CssSelector("h3.table-of-contents__title a")).Text;
 
             // Create a dir for the current section
             var sectionTitleWithIndex = String.Format("{0:D2}. {1}", sectionIndex, sectionTitle);
             var sectionFullPath = CourseDownloader.CreateDir(courseDir, sectionTitleWithIndex);
             Console.WriteLine("    Downloading section {0}: {1}", sectionTitleWithIndex, sectionFullPath);
 
-            var clipElements = sectionElement.FindElements(By.CssSelector("div.content ul"));
+            var clipElements = sectionElement.FindElements(By.CssSelector("div.accordian__content ul"));
             for (var i = 0; i < clipElements.Count; i++)
             {
                 DownloadClip(clipElements[i], i + 1, sectionFullPath);
@@ -78,7 +78,7 @@ namespace Pluralsaver.PluralsightPages
                 CourseDownloader.RemoveFilenameInvalidCharacters(clipTitle));
 
             // If the clip file exists locally, skip to the next one
-            // NB: we may have some clips downloaded if, for some reason, previous download failed
+            // NB: we may have some clips downloaded, e.g. previous download failed for some reason
             // NB #2: at this point we don't know the video extension!
             if (CheckIfAlreadyDownloaded(sectionFullPath, CourseDownloader.RemoveFilenameInvalidCharacters(clipTitle)))
             {
@@ -87,7 +87,7 @@ namespace Pluralsaver.PluralsightPages
             else
             {
                 // Remove this annoying survey widget that receives click insted of the elements sometimes
-                CloseSurveyWidget();
+                //CloseSurveyWidget();
 
                 // Click on the clip and switch to the new window
                 clipLinkElement.Click();
@@ -116,11 +116,11 @@ namespace Pluralsaver.PluralsightPages
             return Directory.GetFiles(path, extensionlessFileName + "*").Length > 0;
         }
 
-        private static void CloseSurveyWidget()
-        {
-            ((IJavaScriptExecutor) Driver.Instance).ExecuteScript(
-                "var element = $('div#webklipper-publisher-widget-container-survey-content'); "
-                + "if (element.length) { element.remove(); }");
-        }
+        //private static void CloseSurveyWidget()
+        //{
+        //    ((IJavaScriptExecutor) Driver.Instance).ExecuteScript(
+        //        "var element = $('div#webklipper-publisher-widget-container-survey-content'); "
+        //        + "if (element.length) { element.remove(); }");
+        //}
     }
 }
