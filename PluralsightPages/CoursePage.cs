@@ -32,6 +32,7 @@ namespace Pluralsaver.PluralsightPages
         public static void Download()
         {
             Initialize();
+            CloseHeader();
 
             var currentCourseTitle = Driver.Instance.FindElement(By.CssSelector("h1.course-hero__title")).Text;
 
@@ -113,11 +114,12 @@ namespace Pluralsaver.PluralsightPages
             return Directory.GetFiles(path, extensionlessFileName + "*").Length > 0;
         }
 
-        //private static void CloseSurveyWidget()
-        //{
-        //    ((IJavaScriptExecutor) Driver.Instance).ExecuteScript(
-        //        "var element = $('div#webklipper-publisher-widget-container-survey-content'); "
-        //        + "if (element.length) { element.remove(); }");
-        //}
+        // Page header often mistakenly receives click
+        private static void CloseHeader()
+        {
+            ((IJavaScriptExecutor) Driver.Instance).ExecuteScript(
+                "var element = document.querySelector('header.header-bar');"
+                + " if (element) { element.parentNode.removeChild(element); }");
+        }
     }
 }
