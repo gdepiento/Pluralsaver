@@ -38,6 +38,9 @@ namespace Pluralsaver.PluralsightPages
 
         public static Uri GetCurrentClipUrl()
         {
+            Driver.WaitSeconds(1);
+            Console.WriteLine(" ({0})", ClipDurationSpan.Text);
+
             // To grab a video url we need to make sure that it's loaded
             Driver.WaitUntilVisible(By.ClassName("icon-pause"));
 

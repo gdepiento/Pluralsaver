@@ -73,7 +73,7 @@ namespace Pluralsaver.PluralsightPages
         {
             var clipLinkElement = clipElement.FindElement(By.TagName("a"));
             var clipTitle = string.Format("{0:D2}. {1}", clipIndex, clipLinkElement.Text);
-            Console.WriteLine("        Downloading clip: {0}", clipTitle);
+            Console.Write("        Downloading clip: {0}", clipTitle);
 
             var clipLocalPath = string.Format(@"{0}\{1}", sectionFullPath,
                 CourseDownloader.RemoveInvalidCharacters(clipTitle));
@@ -83,7 +83,7 @@ namespace Pluralsaver.PluralsightPages
             // NB #2: at this point we don't know the video extension!
             if (CheckIfAlreadyDownloaded(sectionFullPath, CourseDownloader.RemoveInvalidCharacters(clipTitle)))
             {
-                Console.WriteLine("        Clip already exists: {0}", clipLocalPath);
+                Console.WriteLine("\n        Clip already exists: {0}", clipLocalPath);
             }
             else
             {
