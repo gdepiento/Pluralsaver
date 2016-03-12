@@ -45,20 +45,6 @@ namespace Pluralsaver.PluralsightPages
             }
         }
 
-        public static void DownloadCourse()
-        {
-            var courseDir = Initialize();
-
-            var sectionElementList = Driver.Instance.FindElements(By.CssSelector("div.modules section"));
-            Console.WriteLine("Number of sections: {0}", sectionElementList.Count);
-
-            for (var sectionIndex = 0; sectionIndex < sectionElementList.Count; sectionIndex++)
-            {
-                var sectionElement = sectionElementList[sectionIndex];
-                DownloadSection(sectionElement, sectionIndex + 1, courseDir);
-            }
-        }
-
         private static string Initialize()
         {
             // Disable volume
@@ -83,6 +69,20 @@ namespace Pluralsaver.PluralsightPages
             foreach (var sectionExpander in sectionExpanders)
             {
                 sectionExpander.Click();
+            }
+        }
+
+        public static void DownloadCourse()
+        {
+            var courseDir = Initialize();
+
+            var sectionElementList = Driver.Instance.FindElements(By.CssSelector("div.modules section"));
+            Console.WriteLine("Number of sections: {0}", sectionElementList.Count);
+
+            for (var sectionIndex = 0; sectionIndex < sectionElementList.Count; sectionIndex++)
+            {
+                var sectionElement = sectionElementList[sectionIndex];
+                DownloadSection(sectionElement, sectionIndex + 1, courseDir);
             }
         }
 
@@ -120,25 +120,21 @@ namespace Pluralsaver.PluralsightPages
             }
             else
             {
-                // Click on the clip and switch to the new window
-                //clipLinkElement.Click();
-                //Driver.Instance.SwitchTo().Window(Driver.Instance.WindowHandles.Last());
+                // Click on the clip to run it
+                clipLinkElement.Click();
+                
+                var clipUrl = GetCurrentClipUrl();
+                var clipFullPath = string.Format(@"{0}\{1}{2}", sectionFullPath,
+                    CourseDownloader.RemoveInvalidCharacters(clipTitle),
+                    Path.GetExtension(clipUrl.AbsolutePath));
 
-                //var clipUrl = PlayerPage.GetCurrentClipUrl();
-                //var clipFullPath = string.Format(@"{0}\{1}{2}", sectionFullPath,
-                //    CourseDownloader.RemoveInvalidCharacters(clipTitle),
-                //    Path.GetExtension(clipUrl.AbsolutePath));
+                using (var webClient = new WebClient())
+                {
+                    webClient.DownloadFile(clipUrl, clipFullPath);
+                }
 
-                //using (var webClient = new WebClient())
-                //{
-                //    webClient.DownloadFile(clipUrl, clipFullPath);
-                //}
-
-                //Driver.Instance.Close();
-                //Driver.Instance.SwitchTo().Window(Driver.Instance.WindowHandles.FirstOrDefault());
-
-                //// Again, we want to mimic a human so give it a little timeout after the section
-                //Driver.WaitSeconds(PluralsaverSettings.AfterClipTimeout);
+                // Again, we want to mimic a human so give it a little timeout after the section
+                Driver.WaitSeconds(PluralsaverSettings.AfterClipTimeout);
             }
         }
 
@@ -168,12 +164,13 @@ namespace Pluralsaver.PluralsightPages
 
         public static Uri GetCurrentClipUrl()
         {
-            Driver.WaitSeconds(1);
-            Console.WriteLine(" ({0})", ClipDurationSpan.Text);
-
+            //Driver.WaitSeconds(1);
+            ShowControlPanel();
             // To grab a video url we need to make sure that it's loaded
             Driver.WaitUntilVisible(By.ClassName("icon-pause"));
 
+            Console.WriteLine(" ({0})", ClipDurationSpan.Text);
+            
             // We also want to wait a timeout to mimic a human watching the video
             WaitPlayClipTimeout();
 
