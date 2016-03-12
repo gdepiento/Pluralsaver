@@ -58,7 +58,7 @@ namespace Pluralsaver
 
             OpenCourseInBrowser(courseTitle);
 
-            CoursePage.Download();
+            CoursePage.OpenPlayer();
 
             Console.WriteLine("Course download has been completed.");
 
