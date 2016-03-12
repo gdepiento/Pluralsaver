@@ -49,7 +49,7 @@ namespace Pluralsaver
             }
         }
 
-        private void DownloadCourse(int userCourseIndex)
+        public void DownloadCourse(int userCourseIndex)
         {
             Console.WriteLine("\n-------------------------------");
             // We need to subtract 1 from user input number to get the correct index as it null-based 
