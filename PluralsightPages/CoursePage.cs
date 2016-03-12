@@ -27,6 +27,7 @@ namespace Pluralsaver.PluralsightPages
         {
             Initialize();
             CloseHeader();
+            Driver.WaitSeconds(1);
 
             var sections = Driver.Instance.FindElements(By.CssSelector("li.accordian__section"));
             var clips = sections[0].FindElements(By.CssSelector("div.accordian__content ul li"));
