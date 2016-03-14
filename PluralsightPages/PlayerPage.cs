@@ -56,6 +56,8 @@ namespace Pluralsaver.PluralsightPages
             var currentCourseTitle = Driver.Instance.FindElement(By.TagName("h1")).Text;
             Console.WriteLine("Downloading course: {0}", currentCourseTitle);
 
+            CloseTitle();
+
             // Create a dir for the current course
             var courseDir = CourseDownloader.CreateDir(PluralsaverSettings.Path, currentCourseTitle);
             Console.WriteLine("Into {0}", courseDir);
@@ -70,6 +72,13 @@ namespace Pluralsaver.PluralsightPages
             {
                 sectionExpander.Click();
             }
+        }
+
+        private static void CloseTitle()
+        {
+            ((IJavaScriptExecutor)Driver.Instance).ExecuteScript(
+                "var element = document.querySelector('div#course-title');"
+                + " if (element) { element.parentNode.removeChild(element); }");
         }
 
         public static void DownloadCourse()
